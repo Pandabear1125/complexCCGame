@@ -17,6 +17,8 @@ function draw(mon, ox, oy)
    mon.clear()
    if ox < 0 then ox = 0 end 
    if oy < 0 then oy = 0 end 
+   if ox >= activeMap.data.width-monW then ox = activeMap.data.width-monW end 
+   if oy >= activeMap.data.height-monH then oy = activeMap.data.height-monH end 
    for i = LX, HX do 
       for j = LY, HY do 
          mon.setCursorPos(i, j) 
