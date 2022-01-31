@@ -13,9 +13,20 @@ function getPosition()
    return Player.x, Player.y
 end 
 
-function move(dx, dy) 
-   Player.x = Player.x + dx 
-   Player.y = Player.y + dy 
+local function checkCollision(Map, x, y)
+   local tile = Map.map[y][x]
+   if tile == 'X' or tile == 'E' or tile == 'B' then 
+      return false 
+   else 
+      return true 
+   end 
+end 
+
+function move(map, dx, dy) 
+   if checkCollision(map, Player.x+dx, Player.y+dy) then 
+      Player.x = Player.x + dx 
+      Player.y = Player.y + dy 
+   end 
 end 
 
 function moveTo(x, y) 
@@ -48,13 +59,5 @@ function draw(mon, ox, oy)
    end 
 
    mon.setCursorPos(curX, curY)
-   mon.write("P")
-   mon.setCursorPos(1, 1)
-   mon.write(Player.x..' '..Player.y)
-   mon.setCursorPos(1, 2)
-   mon.write(Player.mapW..' '..Player.mapH)
-   mon.setCursorPos(1, 3)
-   mon.write(Player.widthRadius..' '..Player.heightRadius)
-   mon.setCursorPos(1, 4)
-   mon.write(tostring(curX)..' '..tostring(curY))   
+   mon.write("P") 
 end 

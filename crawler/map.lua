@@ -4,13 +4,15 @@ local monW, monH = term.getSize()
 
 local LX, LY, HX, HY = 1, 1, monW, monH
 
+local function populateActiveMap
+
 function loadMapFile(path)
    assert(fs.exists("mapEditor/maps/"..path), "map file at path: \'"..path.."\' not found")
    file.setDirectory("mapEditor/maps/") 
    local Map = file.read(path) 
    activeMap = Map 
    activePath = path 
-   return activeMap.data.width, activeMap.data.height 
+   return activeMap 
 end 
 
 function draw(mon, ox, oy)
