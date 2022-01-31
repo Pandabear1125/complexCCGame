@@ -2,5 +2,17 @@
    "Lua.diagnostics.disable": [
       "lowercase-global",
       "trailing-space"
+   ],
+   "Lua.diagnostics.globals": [
+      "term",
+      "fs",
+      "textutils",
+      "button",
+      "ui",
+      "gameVar",
+      "editor",
+      "file",
+      "map",
+      "player"
    ]
 }

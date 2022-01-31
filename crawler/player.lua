@@ -1,6 +1,10 @@
 local Player = {
    x = 3, 
-   y = 3
+   y = 3, 
+   heightRadius = 0, 
+   widthRadius = 0,
+   mapH = 0, 
+   mapW = 0
 }
 
 function initialize(mapW, mapH, monW, monH)
@@ -39,20 +43,26 @@ function draw(mon, ox, oy)
 
    --figure out x 
    if Player.x >= Player.widthRadius and Player.x <= Player.mapW-Player.widthRadius then 
+      --center of screen
       curX = Player.widthRadius 
    elseif Player.x < Player.widthRadius then 
+      -- left wall
       curX = Player.x
    elseif Player.x > Player.mapW-Player.widthRadius then 
+      -- right wall
       curX = Player.x - (Player.mapW-Player.widthRadius) + Player.widthRadius
    else 
       curX = 0
    end 
    --figure for y
    if Player.y >= Player.heightRadius and Player.y <= Player.mapH-Player.heightRadius then 
+      --center of screen
       curY = Player.heightRadius 
    elseif Player.y < Player.heightRadius then 
+      -- top wall
       curY = Player.y
    elseif Player.y > Player.mapH-Player.heightRadius then 
+      -- bottom wall
       curY = Player.y - (Player.mapH-Player.heightRadius) + Player.heightRadius
    else 
       curY = 0
