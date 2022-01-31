@@ -10,7 +10,7 @@ function loadMapFile(path)
    local Map = file.read(path) 
    activeMap = Map 
    activePath = path 
-   return path 
+   return activeMap.data.width, activeMap.data.height 
 end 
 
 function draw(mon, ox, oy)
