@@ -21,8 +21,6 @@ function draw(mon, ox, oy)
       for j = LY, HY do 
          mon.setCursorPos(i, j) 
          mon.write(activeMap.map[j+oy][i+ox])
-         mon.setCursorPos(1, 1)
-         mon.write(ox..' '..oy)
       end 
    end 
 end 
