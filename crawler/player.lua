@@ -21,6 +21,9 @@ local function checkCollision(Map, x, y)
    local tile = Map.map[y][x]
    if tile == 'X' or tile == 'E' or tile == 'B' then 
       return false 
+   elseif tile == "!" then 
+      map.changeMap("dungeon1") 
+      return true
    else 
       return true 
    end 

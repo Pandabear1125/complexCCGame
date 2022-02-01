@@ -1,7 +1,9 @@
-local activeMap = nil 
-local activePath = nil
+activeMap = nil 
+activePath = nil
 local dungeonList = nil
 local monW, monH = term.getSize() 
+
+local oldPlayerData = {0, 0}
 
 local LX, LY, HX, HY = 1, 1, monW, monH
 
@@ -25,13 +27,15 @@ end
 local function save(path) 
    assert(activeMap, "no map loaded/selected to save")
    file.setDirectory("mapEditor/maps/") 
-   file.write(path, activeMap) 
+   file.write(path, {activeMap.map, activeMap.data}, true) 
 end 
 
 function loadMapFile(path)
    assert(fs.exists("mapEditor/maps/"..path), "map file at path: \'"..path.."\' not found")
    file.setDirectory("mapEditor/maps/") 
-   local Map = file.read(path) 
+   local mapData = file.read(path, 1)
+   local mapValueData = file.read(path, 2)
+   local Map = {map = mapData, data = mapValueData}
    activeMap = Map 
    activePath = path
    dungeonList = {}
@@ -41,6 +45,11 @@ end
 
 function changeMap(newMapPath) 
    save(activePath)
+   local px, py = player.getPosition()
+   oldPlayerData = {px, py}
+   activeMap = loadMapFile(newMapPath)
+   player.moveTo(activeMap.data.playerSpawn[1], activeMap.data.playerSpawn[2])
+end 
    
 
 function draw(mon, ox, oy)

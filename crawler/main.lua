@@ -3,22 +3,22 @@ os.loadAPI("gameVar")
 os.loadAPI("map")
 os.loadAPI("player")
 
-local Map = map.loadMapFile("mainWorld")
+map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
 local centerX, centerY = math.floor(monW/2), math.floor(monH/2)
 
-player.initialize(Map.data.width, Map.data.height, monW, monH)
+player.initialize(102, 102, monW, monH)
 
 function getInput() 
    local event, key = os.pullEvent('key') 
    if key == 208 then -- down arrow
-      player.move(Map, 0, 1)
+      player.move(map.activeMap, 0, 1)
    elseif key == 200 then -- up arrow 
-      player.move(Map, 0, -1)
+      player.move(map.activeMap, 0, -1)
    elseif key == 203 then -- left arrow 
-      player.move(Map, -1, 0)
+      player.move(map.activeMap, -1, 0)
    elseif key == 205 then -- right arrow
-      player.move(Map, 1, 0)
+      player.move(map.activeMap, 1, 0)
    end 
 end 
 
