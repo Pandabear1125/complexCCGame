@@ -12,26 +12,26 @@ player.initialize(Map.data.width, Map.data.height, monW, monH)
 function getInput() 
    local event, key = os.pullEvent('key') 
    if key == 208 then -- down arrow
-      -- pY = pY + 1
       player.move(Map, 0, 1)
    elseif key == 200 then -- up arrow 
-      -- pY = pY - 1
       player.move(Map, 0, -1)
    elseif key == 203 then -- left arrow 
-      -- pX = pX - 1 
       player.move(Map, -1, 0)
    elseif key == 205 then -- right arrow
-      -- pX = pX + 1
       player.move(Map, 1, 0)
    end 
 end 
 
 local function mainLoop() 
    while true do 
-      local pX, pY = player.getPosition()
-      map.draw(term, pX-centerX, pY-centerY)
-      player.draw(term)
-      getInput()
+      if gameVar.state == 1 then 
+         local pX, pY = player.getPosition()
+         map.draw(term, pX-centerX, pY-centerY)
+         player.draw(term)
+         getInput()
+      else 
+         return 1
+      end 
    end 
 end 
 
