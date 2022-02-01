@@ -15,7 +15,13 @@ function createMap(path, width, height, emptyVal)
    local width = width + 2
    local height = height + 2
    local Map = {
-      data = {width = width, height = height, playerCount = 0, bossCount = 0}, 
+      data = {
+         width = width, 
+         height = height, 
+         playerCount = 0, 
+         bossCount = 0, 
+         playerSpawn = nil
+      },
       map = {} 
    }
    for i = 1, height do 
@@ -59,13 +65,19 @@ function setTile(value, erase)
          if value == "P" and activeMap.data.playerCount > 0 then 
          elseif value == "B" and activeMap.data.bossCount > 1 then 
          else 
-            if value == "P" then activeMap.data.playerCount = activeMap.data.playerCount + 1 end 
+            if value == "P" then 
+               activeMap.data.playerCount = activeMap.data.playerCount + 1 
+               activeMap.data.playerSpawn = {cX, cY}
+            end 
             if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount + 1 end 
             activeMap.map[cY][cX] = value 
          end 
       else 
          local value = activeMap.map[cY][cX] 
-         if value == "P" then activeMap.data.playerCount = activeMap.data.playerCount - 1 end 
+         if value == "P" then 
+            activeMap.data.playerCount = activeMap.data.playerCount - 1 
+            activeMap.data.playerSpawn = nil
+         end 
          if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount - 1 end 
          activeMap.map[cY][cX] = '' 
       end 
@@ -129,7 +141,7 @@ function draw(mon)
    mon.setCursorPos(1, h+1) 
    mon.write("Currently Editing: \'"..activePath.."\'")
    mon.setCursorPos(1, h) 
-   mon.write("("..curX-mapX..", "..curY-mapY..") Selected Object: \'"..placement[placeSelect].."\' = "..desc[placeSelect])
+   mon.write("("..curX-mapX..","..curY-mapY..") Selected Item: \'"..placement[placeSelect].."\' = "..desc[placeSelect])
 end 
 
 function update(mon)
