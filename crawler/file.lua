@@ -31,24 +31,26 @@ function write(simplePath, text, isMultiLine) -- text can be a table, with each 
    
    if type(text) == "string" or type(text) == "number" then 
       h.writeLine(text) 
-   elseif type(text) == "table" and isMultiLine then 
-      for i = 1, #text do 
-         if type(text[i]) == 'string' then 
-            h.writeLine(text[i]) 
-         elseif type(text[i]) == 'number' then 
-            h.writeLine(tostring(text[i])) 
-         elseif type(text[i]) == 'table' then 
-            local serText = textutils.serialize(text[i]) 
-            h.writeLine(serText) 
-         else 
-            error("text of type \'"..type(text[i]).."\' is not supported") 
+   elseif type(text) == "table" then 
+      if isMultiLine then 
+         for i = 1, #text do 
+            if type(text[i]) == 'string' then 
+               h.writeLine(text[i]) 
+            elseif type(text[i]) == 'number' then 
+               h.writeLine(tostring(text[i])) 
+            elseif type(text[i]) == 'table' then 
+               local serText = textutils.serialize(text[i]) 
+               h.writeLine(serText) 
+            else 
+               error("text of type \'"..type(text[i]).."\' is not supported") 
+            end 
          end 
+      else 
+         local serText = textutils.serialize(text) 
+         h.writeLine(serText) 
       end 
-   elseif type(text) == "table" and not isMultiLine then
-      local serText = textutils.serialize(text[i]) 
-      h.writeLine(serText) 
    else 
-      error("text of type \'"..type(text[i]).."\' is not supported") 
+      error("text of type \'"..type(text).."\' is not supported") 
    end 
    h.close() 
 end
