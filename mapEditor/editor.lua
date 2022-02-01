@@ -42,7 +42,7 @@ function createMap(path, width, height, emptyVal)
 
    file.setDirectory("mapEditor/maps/") 
    file.create(path) 
-   file.write(path, Map) 
+   file.write(path, {Map.map, Map.data}, true) 
    activeMap = Map
    activePath = path 
    return path 
@@ -51,8 +51,9 @@ end
 function loadMap(path) 
    assert(fs.exists("mapEditor/maps/"..path), "map file at path: \'"..path.."\' not found")
    file.setDirectory("mapEditor/maps/") 
-   local Map = file.read(path) 
-   activeMap = Map 
+   local mapGrid = file.read(path, 1)
+   local mapData = file.read(path, 2)
+   activeMap = {map = mapGrid, data = mapData} 
    activePath = path 
    return path 
 end 
@@ -87,7 +88,7 @@ end
 function save(path) 
    assert(activeMap, "no map loaded/selected to save")
    file.setDirectory("mapEditor/maps/") 
-   file.write(path, activeMap) 
+   file.write(path, {activeMap.map, activeMap.data}, true) 
 end 
 
 function draw(mon) 
