@@ -3,7 +3,7 @@ os.loadAPI("gameVar")
 os.loadAPI("map")
 os.loadAPI("player")
 
-local Map = map.loadMapFile("crawlerTest")
+local Map = map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
 local centerX, centerY = math.floor(monW/2), math.floor(monH/2)
 

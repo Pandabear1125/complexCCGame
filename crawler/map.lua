@@ -1,5 +1,6 @@
 local activeMap = nil 
-local activePath = nil 
+local activePath = nil
+local dungeonList = nil
 local monW, monH = term.getSize() 
 
 local LX, LY, HX, HY = 1, 1, monW, monH
@@ -10,12 +11,21 @@ local function setTile(value, x, y)
    end 
 end 
 
-local function populateActiveMap()
-   for i = 1, math.random(2, 5) do 
-      local x = math.random(2, activeMap.data.width-1)
-      local y = math.random(2, activeMap.data.height-1)
+local function populateActiveMap(holdingTable)
+   for i = 1, math.random(2, math.floor(activeMap.data.width/15)) do 
+      local x = math.random(7, activeMap.data.width-6)
+      local y = math.random(7, activeMap.data.height-6)
+      local mapPath = math.random(1, 9)
       setTile('!', x, y)
+      setTile(mapPath, x+2, y)
+      table.insert(holdingTable, {x, y, mapPath})
    end 
+end 
+
+local function save(path) 
+   assert(activeMap, "no map loaded/selected to save")
+   file.setDirectory("mapEditor/maps/") 
+   file.write(path, activeMap) 
 end 
 
 function loadMapFile(path)
@@ -23,10 +33,15 @@ function loadMapFile(path)
    file.setDirectory("mapEditor/maps/") 
    local Map = file.read(path) 
    activeMap = Map 
-   activePath = path 
-   populateActiveMap()
+   activePath = path
+   dungeonList = {}
+   populateActiveMap(dungeonList)
    return activeMap 
 end 
+
+function changeMap(newMapPath) 
+   save(activePath)
+   
 
 function draw(mon, ox, oy)
    mon.clear()
