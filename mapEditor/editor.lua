@@ -8,6 +8,8 @@ local placement = {'X', 'P', 'E', 'B', '$', '*'}
 local desc = {"Wall", "Player Spawn: Max 1", "Enemy Spawn", "Boss Spawn: Max 2", "Loot", "Trap"}
 local placeSelect = 1 
 
+local viewW, viewH = 32, 12
+
 function createMap(path, width, height, emptyVal)
    local emptyVal = emptyVal or ''
    local width = width + 2
@@ -79,11 +81,12 @@ end
 function draw(mon) 
    assert(activeMap, "no map loaded/selected to draw")
    local x, y = mapX, mapY 
-   for i = 1, activeMap.data.height do 
-      for j = 1, activeMap.data.width do
-         if y+1 < 16 and x+j < 38 then 
-            mon.setCursorPos(x+j, y+i) 
-            mon.write(activeMap.map[i][j])
+
+   for i = 1, viewW do 
+      for j = 1, viewH do 
+         mon.setCursorPos(i, j)
+         if j-mapY > 0 and i-mapX > 0 and j-mapY <= activeMap.data.height and i-mapX <= activeMap.data.width then 
+            mon.write(activeMap.map[mapY-j][mapX-i])
          end 
       end 
    end 
