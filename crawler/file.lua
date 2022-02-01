@@ -10,26 +10,45 @@ function create(simplePath)
    return simplePath 
 end 
 
-function read(simplePath) 
+function read(simplePath, line) 
    assert(fs.exists(directory..simplePath), "file at \""..directory..simplePath.."\" does not exist")
    local h = fs.open(directory..simplePath, 'r') 
-   local contents = h.readAll()
+   local contents = nil
+   if line then 
+      for i = 1, line do 
+         contents = h.readLine()
+      end 
+   else 
+      contents = h.readAll()
+   end 
    h.close() 
    return textutils.unserialize(contents)
 end 
 
-function write(simplePath, text) 
+function write(simplePath, text, isMultiLine) -- text can be a table, with each index a line
    assert(fs.exists(directory..simplePath), "file at \""..directory..simplePath.."\" does not exist")
-   local h = fs.open(directory..simplePath, 'w') 
-   if type(text) == 'string' then 
-      h.write(text) 
-   elseif type(text) == 'number' then 
-      h.write(tostring(text)) 
-   elseif type(text) == 'table' then 
-      local serText = textutils.serialize(text) 
-      h.write(serText) 
+   local h = fs.open(directory..simplePath, 'w')
+   
+   if type(text) == "string" or type(text) == "number" then 
+      h.writeLine(text) 
+   elseif type(text) == "table" and isMultiLine then 
+      for i = 1, #text do 
+         if type(text[i]) == 'string' then 
+            h.writeLine(text[i]) 
+         elseif type(text[i]) == 'number' then 
+            h.writeLine(tostring(text[i])) 
+         elseif type(text[i]) == 'table' then 
+            local serText = textutils.serialize(text[i]) 
+            h.writeLine(serText) 
+         else 
+            error("text of type \'"..type(text[i]).."\' is not supported") 
+         end 
+      end 
+   elseif type(text) == "table" and not isMultiLine then
+      local serText = textutils.serialize(text[i]) 
+      h.writeLine(serText) 
    else 
-      error("text of type \'"..type(text).."\' is not supported") 
+      error("text of type \'"..type(text[i]).."\' is not supported") 
    end 
    h.close() 
 end
