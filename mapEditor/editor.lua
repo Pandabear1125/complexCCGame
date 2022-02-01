@@ -98,7 +98,7 @@ function draw(mon)
       for j = 1, viewH do 
          mon.setCursorPos(i, j)
          if j-mapY > 0 and i-mapX > 0 and j-mapY <= activeMap.data.height and i-mapX <= activeMap.data.width then 
-            mon.write(activeMap.map[mapY-j][mapX-i])
+            mon.write(activeMap.map[j-mapY][i-mapX])
          end 
       end 
    end 
