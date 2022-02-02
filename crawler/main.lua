@@ -12,13 +12,13 @@ player.initialize(102, 102, monW, monH)
 function getInput() 
    local event, key = os.pullEvent('key') 
    if key == 208 then -- down arrow
-      player.move(map.activeMap, 0, 1)
+      player.move(map.getActiveMap(), 0, 1)
    elseif key == 200 then -- up arrow 
-      player.move(map.activeMap, 0, -1)
+      player.move(map.getActiveMap(), 0, -1)
    elseif key == 203 then -- left arrow 
-      player.move(map.activeMap, -1, 0)
+      player.move(map.getActiveMap(), -1, 0)
    elseif key == 205 then -- right arrow
-      player.move(map.activeMap, 1, 0)
+      player.move(map.getActiveMap(), 1, 0)
    end 
 end 
 

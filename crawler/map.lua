@@ -1,6 +1,7 @@
-activeMap = nil 
-activePath = nil
-local dungeonList = nil
+local activeMap = nil
+local activePath = nil
+
+local dungeonList = {}
 local monW, monH = term.getSize() 
 
 local oldPlayerData = {0, 0}
@@ -14,7 +15,7 @@ local function setTile(value, x, y)
 end 
 
 local function populateActiveMap(holdingTable)
-   for i = 1, math.random(2, math.floor(activeMap.data.width/15)) do 
+   for i = 1, math.random(2, 5) do 
       local x = math.random(7, activeMap.data.width-6)
       local y = math.random(7, activeMap.data.height-6)
       local mapPath = math.random(1, 9)
@@ -32,26 +33,30 @@ end
 
 function loadMapFile(path)
    assert(fs.exists("mapEditor/maps/"..path), "map file at path: \'"..path.."\' not found")
-   file.setDirectory("mapEditor/maps/") 
-   local mapData = file.read(path, 1)
-   local mapValueData = file.read(path, 2)
-   local Map = {map = mapData, data = mapValueData}
-   activeMap = Map 
+   file.setDirectory("mapEditor/maps/")
+   activeMap = {map = file.read(path, 1), data = file.read(path, 2)}
    activePath = path
    dungeonList = {}
    populateActiveMap(dungeonList)
-   return activeMap 
+end 
+
+function getActiveMap() 
+   --need this cause apparently 'activeMap' var is local when its global
+   return activeMap
 end 
 
 function changeMap(newMapPath) 
    save(activePath)
    local px, py = player.getPosition()
    oldPlayerData = {px, py}
-   activeMap = loadMapFile(newMapPath)
+   assert(fs.exists("mapEditor/maps/"..newMapPath), "map file at path: \'"..newMapPath.."\' not found")
+   file.setDirectory("mapEditor/maps/")
+   activeMap = {map = file.read(newMapPath, 1), data = file.read(newMapPath, 2)}
+   activePath = newMapPath
    player.moveTo(activeMap.data.playerSpawn[1], activeMap.data.playerSpawn[2])
+   player.initialize(activeMap.data.width, activeMap.data.height, monW, monH)
 end 
    
-
 function draw(mon, ox, oy)
    mon.clear()
    -- reset ox, oy if out of bounds
