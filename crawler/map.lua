@@ -54,7 +54,7 @@ function changeMap(newMapPath)
    activeMap = {map = file.read(newMapPath, 1), data = file.read(newMapPath, 2)}
    activePath = newMapPath
    player.moveTo(activeMap.data.playerSpawn[1], activeMap.data.playerSpawn[2])
-   player.initialize(activeMap.data.width, activeMap.data.height, monW, monH)
+   player.initialize(activeMap, monW, monH)
 end 
    
 function draw(mon, ox, oy)

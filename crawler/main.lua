@@ -1,7 +1,7 @@
-os.loadAPI("file")
-os.loadAPI("gameVar")
-os.loadAPI("map")
-os.loadAPI("player")
+os.loadAPI("file.lua")
+os.loadAPI("gameVar.lua")
+os.loadAPI("map.lua")
+os.loadAPI("player.lua")
 
 map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()

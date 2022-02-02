@@ -7,8 +7,8 @@ local Player = {
    mapW = 0
 }
 
-function initialize(map, monW, monH)
-   Player.mapW, Player.mapH = map.data.width, map.data.height
+function initialize(Map, monW, monH)
+   Player.mapW, Player.mapH = Map.data.width, Map.data.height
    Player.widthRadius = math.floor(monW/2)
    Player.heightRadius = math.floor(monH/2)
 end 
@@ -29,8 +29,8 @@ local function checkCollision(Map, x, y)
    end 
 end 
 
-function move(map, dx, dy) 
-   if checkCollision(map, Player.x+dx, Player.y+dy) then 
+function move(Map, dx, dy) 
+   if checkCollision(Map, Player.x+dx, Player.y+dy) then 
       Player.x = Player.x + dx 
       Player.y = Player.y + dy 
    end 
