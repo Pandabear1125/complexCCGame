@@ -7,7 +7,7 @@ map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
 local centerX, centerY = math.floor(monW/2), math.floor(monH/2)
 
-player.initialize(102, 102, monW, monH)
+player.initialize(map.getActiveMap(), monW, monH)
 
 function getInput() 
    local event, key = os.pullEvent('key') 

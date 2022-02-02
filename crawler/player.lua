@@ -7,8 +7,8 @@ local Player = {
    mapW = 0
 }
 
-function initialize(mapW, mapH, monW, monH)
-   Player.mapW, Player.mapH = mapW, mapH
+function initialize(map, monW, monH)
+   Player.mapW, Player.mapH = map.data.width, map.data.height
    Player.widthRadius = math.floor(monW/2)
    Player.heightRadius = math.floor(monH/2)
 end 
