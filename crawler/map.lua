@@ -36,6 +36,16 @@ function loadMapFile(path)
    file.setDirectory("mapEditor/maps/")
    activeMap = {map = file.read(path, 1), data = file.read(path, 2)}
    activePath = path
+   if activeMap.data.width < monW then 
+      activeMap.data.offX = math.floor((monW-activeMap.data.width)/2)
+   else 
+      activeMap.data.offX = 0
+   end 
+   if activeMap.data.height < monH then 
+      activeMap.data.offY = math.floor((monH-activeMap.data.height)/2)
+   else 
+      activeMap.data.offY = 0
+   end 
    dungeonList = {}
    populateActiveMap(dungeonList)
 end 
@@ -53,6 +63,16 @@ function changeMap(newMapPath)
    file.setDirectory("mapEditor/maps/")
    activeMap = {map = file.read(newMapPath, 1), data = file.read(newMapPath, 2)}
    activePath = newMapPath
+   if activeMap.data.width < monW then 
+      activeMap.data.offX = math.floor((monW-activeMap.data.width)/2)
+   else 
+      activeMap.data.offX = 0
+   end 
+   if activeMap.data.height < monH then 
+      activeMap.data.offY = math.floor((monH-activeMap.data.height)/2)
+   else 
+      activeMap.data.offY = 0
+   end 
    player.initialize(activeMap, monW, monH)
 end 
    
@@ -68,8 +88,10 @@ function draw(mon, ox, oy)
    -- draw
    for i = LX, HX do 
       for j = LY, HY do 
-         mon.setCursorPos(i, j) 
+         mon.setCursorPos(i+activeMap.data.offX, j+activeMap.data.offY) 
          mon.write(activeMap.map[j+oy][i+ox])
       end 
    end 
+   mon.setCursorPos(1, 2)
+   mon.write(activeMap.data.offX)
 end 

@@ -13,6 +13,17 @@ function initialize(Map, monW, monH)
    Player.heightRadius = math.floor(monH/2)
    Player.x = Map.data.playerSpawn[1]
    Player.y = Map.data.playerSpawn[2]
+   if Map.data.width < monW then 
+      Player.ox = math.floor((monW-Map.data.width)/2)
+   else 
+      Player.ox = 0
+   end 
+   
+   if Map.data.height < monH then 
+      Player.oy = math.floor((monH-Map.data.height)/2)
+   else 
+      Player.oy = 0
+   end 
 end 
 
 function getPosition()
@@ -43,7 +54,7 @@ function moveTo(x, y)
    Player.y = y 
 end 
 
-function draw(mon, ox, oy)
+function draw(mon)
    local curX, curY
 
    --figure out x 
@@ -81,14 +92,8 @@ function draw(mon, ox, oy)
       curY = Player.y 
    end 
 
-   mon.setCursorPos(curX, curY)
+   mon.setCursorPos(curX+Player.ox, curY+Player.oy)
    mon.write("P") 
-   mon.setCursorPos(1, 1)
-   mon.write(curX..' '..curY)
-   mon.setCursorPos(1, 2)
-   mon.write(Player.x..' '..Player.y)
-   mon.setCursorPos(1, 3)
-   mon.write(Player.mapW..' '..Player.mapH)
-   mon.setCursorPos(1, 4)
-   mon.write(Player.widthRadius..' '..Player.heightRadius)
+   mon.setCursorPos(curX, curY)
+   mon.write(Player.ox..' '..Player.oy)
 end 
