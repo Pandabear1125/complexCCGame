@@ -8,7 +8,7 @@ local placement = {'X', 'P', 'E', 'B', '$', '*'}
 local desc = {"Wall", "Player Spawn: Max 1", "Enemy Spawn", "Boss Spawn: Max 2", "Loot", "Trap"}
 local placeSelect = 1 
 
-local viewW, viewH = 32, 12
+local viewW, viewH = 38, 16
 
 function createMap(path, width, height, emptyVal)
    local emptyVal = emptyVal or ''
