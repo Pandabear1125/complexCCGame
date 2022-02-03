@@ -53,7 +53,6 @@ function changeMap(newMapPath)
    file.setDirectory("mapEditor/maps/")
    activeMap = {map = file.read(newMapPath, 1), data = file.read(newMapPath, 2)}
    activePath = newMapPath
-   player.moveTo(activeMap.data.playerSpawn[1], activeMap.data.playerSpawn[2])
    player.initialize(activeMap, monW, monH)
 end 
    
@@ -64,6 +63,8 @@ function draw(mon, ox, oy)
    if oy < 0 then oy = 0 end 
    if ox >= activeMap.data.width-monW then ox = activeMap.data.width-monW end 
    if oy >= activeMap.data.height-monH then oy = activeMap.data.height-monH end 
+   if activeMap.data.width < monW then ox = 0 end 
+   if activeMap.data.height < monH then oy = 0 end 
    -- draw
    for i = LX, HX do 
       for j = LY, HY do 

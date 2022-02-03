@@ -11,6 +11,8 @@ function initialize(Map, monW, monH)
    Player.mapW, Player.mapH = Map.data.width, Map.data.height
    Player.widthRadius = math.floor(monW/2)
    Player.heightRadius = math.floor(monH/2)
+   Player.x = Map.data.playerSpawn[1]
+   Player.y = Map.data.playerSpawn[2]
 end 
 
 function getPosition()
@@ -45,32 +47,48 @@ function draw(mon, ox, oy)
    local curX, curY
 
    --figure out x 
-   if Player.x >= Player.widthRadius and Player.x <= Player.mapW-Player.widthRadius then 
-      --center of screen
-      curX = Player.widthRadius 
-   elseif Player.x < Player.widthRadius then 
-      -- left wall
-      curX = Player.x
-   elseif Player.x > Player.mapW-Player.widthRadius then 
-      -- right wall
-      curX = Player.x - (Player.mapW-Player.widthRadius) + Player.widthRadius
+   if Player.mapW >= Player.widthRadius*2 then -- whether map is smaller than screen width
+      if Player.x >= Player.widthRadius and Player.x <= Player.mapW-Player.widthRadius then 
+         --center of screen
+         curX = Player.widthRadius 
+      elseif Player.x < Player.widthRadius then 
+         -- left wall
+         curX = Player.x
+      elseif Player.x > Player.mapW-Player.widthRadius then 
+         -- right wall
+         curX = Player.x - (Player.mapW-Player.widthRadius) + Player.widthRadius
+      else 
+         curX = 0
+      end 
    else 
-      curX = 0
+      curX = Player.x 
    end 
    --figure for y
-   if Player.y >= Player.heightRadius and Player.y <= Player.mapH-Player.heightRadius then 
-      --center of screen
-      curY = Player.heightRadius 
-   elseif Player.y < Player.heightRadius then 
-      -- top wall
-      curY = Player.y
-   elseif Player.y > Player.mapH-Player.heightRadius then 
-      -- bottom wall
-      curY = Player.y - (Player.mapH-Player.heightRadius) + Player.heightRadius
+   if Player.mapH >= Player.heightRadius*2 then -- whether map is smaller than screen height
+      if Player.y >= Player.heightRadius and Player.y <= Player.mapH-Player.heightRadius then 
+         --center of screen
+         curY = Player.heightRadius 
+      elseif Player.y < Player.heightRadius then 
+         -- top wall
+         curY = Player.y
+      elseif Player.y > Player.mapH-Player.heightRadius then 
+         -- bottom wall
+         curY = Player.y - (Player.mapH-Player.heightRadius) + Player.heightRadius
+      else 
+         curY = 0
+      end 
    else 
-      curY = 0
+      curY = Player.y 
    end 
 
    mon.setCursorPos(curX, curY)
    mon.write("P") 
+   mon.setCursorPos(1, 1)
+   mon.write(curX..' '..curY)
+   mon.setCursorPos(1, 2)
+   mon.write(Player.x..' '..Player.y)
+   mon.setCursorPos(1, 3)
+   mon.write(Player.mapW..' '..Player.mapH)
+   mon.setCursorPos(1, 4)
+   mon.write(Player.widthRadius..' '..Player.heightRadius)
 end 
