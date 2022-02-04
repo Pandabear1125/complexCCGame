@@ -77,14 +77,15 @@ function changeMap(newMapPath)
 end 
    
 function draw(mon, ox, oy)
+   local LX, LY, HX, HY = LX, LY, HX, HY
    mon.clear()
    -- reset ox, oy if out of bounds
    if ox < 0 then ox = 0 end 
    if oy < 0 then oy = 0 end 
    if ox >= activeMap.data.width-monW then ox = activeMap.data.width-monW end 
    if oy >= activeMap.data.height-monH then oy = activeMap.data.height-monH end 
-   if activeMap.data.width < monW then ox = 0 end 
-   if activeMap.data.height < monH then oy = 0 end 
+   if activeMap.data.width < monW then ox = 0; HX = activeMap.data.width end 
+   if activeMap.data.height < monH then oy = 0; HY = activeMap.data.height end 
    -- draw
    for i = LX, HX do 
       for j = LY, HY do 
@@ -92,6 +93,4 @@ function draw(mon, ox, oy)
          mon.write(activeMap.map[j+oy][i+ox])
       end 
    end 
-   mon.setCursorPos(1, 2)
-   mon.write(activeMap.data.offX)
 end 
