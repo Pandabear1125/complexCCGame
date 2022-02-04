@@ -7,12 +7,16 @@ local Player = {
    mapW = 0
 }
 
-function initialize(Map, monW, monH)
+function initialize(Map, monW, monH, data)
    Player.mapW, Player.mapH = Map.data.width, Map.data.height
    Player.widthRadius = math.floor(monW/2)
    Player.heightRadius = math.floor(monH/2)
-   Player.x = Map.data.playerSpawn[1]
-   Player.y = Map.data.playerSpawn[2]
+   if data then 
+      moveTo(data.x, data.y)
+   else 
+      Player.x = Map.data.playerSpawn[1]
+      Player.y = Map.data.playerSpawn[2]
+   end 
    if Map.data.width < monW then 
       Player.ox = math.floor((monW-Map.data.width)/2)
    else 
@@ -32,11 +36,14 @@ end
 
 local function checkCollision(Map, x, y)
    local tile = Map.map[y][x]
+   for k, v in ipairs(Map.data.dungeonList) do 
+      if v.x == x and v.y == y then 
+         map.changeMap(v.path, map.getActivePath()) 
+         return false
+      end 
+   end 
    if tile == 'X' or tile == 'E' or tile == 'B' then 
       return false 
-   elseif tile == "!" then 
-      map.changeMap("dungeon1") 
-      return true
    else 
       return true 
    end 
@@ -94,6 +101,4 @@ function draw(mon)
 
    mon.setCursorPos(curX+Player.ox, curY+Player.oy)
    mon.write("P") 
-   mon.setCursorPos(curX, curY)
-   mon.write(Player.ox..' '..Player.oy)
 end 

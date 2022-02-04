@@ -29,6 +29,7 @@ local function mainLoop()
          map.draw(term, pX-centerX, pY-centerY)
          player.draw(term)
          getInput()
+         --map.update()
       else 
          return 1
       end 

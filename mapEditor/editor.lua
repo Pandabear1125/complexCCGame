@@ -4,8 +4,8 @@ local monW, monH = term.getSize()
 
 local curX, curY = math.floor(monW/2)-7, math.floor(monH/2)-1
 local mapX, mapY = 0, 0
-local placement = {'X', 'P', 'E', 'B', '$', '*'}
-local desc = {"Wall", "Player Spawn: Max 1", "Enemy Spawn", "Boss Spawn: Max 2", "Loot", "Trap"}
+local placement = {'X', 'P', 'E', 'B', '$', '*', '!'}
+local desc = {"Wall", "Player Spawn: Max 1", "Enemy Spawn", "Boss Spawn: Max 2", "Loot", "Trap", "Dungeon"}
 local placeSelect = 1 
 
 local viewW, viewH = 38, 16
@@ -20,7 +20,8 @@ function createMap(path, width, height, emptyVal)
          height = height, 
          playerCount = 0, 
          bossCount = 0, 
-         playerSpawn = nil
+         playerSpawn = nil,
+         dungeonList = {}
       },
       map = {} 
    }
@@ -63,23 +64,36 @@ function setTile(value, erase)
    local cX, cY = curX-mapX, curY-mapY 
    if cX > 1 and cY > 1 and cX < activeMap.data.width and cY < activeMap.data.height then 
       if not erase then 
-         if value == "P" and activeMap.data.playerCount > 0 then 
-         elseif value == "B" and activeMap.data.bossCount > 1 then 
-         else 
-            if value == "P" then 
-               activeMap.data.playerCount = activeMap.data.playerCount + 1 
-               activeMap.data.playerSpawn = {cX, cY}
-            end 
-            if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount + 1 end 
-            activeMap.map[cY][cX] = value 
-         end 
+         if activeMap.map[cY][cX] == '' then 
+            if value == "P" and activeMap.data.playerCount > 0 then 
+            elseif value == "B" and activeMap.data.bossCount > 1 then 
+            else 
+               if value == "P" then 
+                  activeMap.data.playerCount = activeMap.data.playerCount + 1 
+                  activeMap.data.playerSpawn = {cX, cY}
+               end 
+               if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount + 1 end 
+               if value == "!" then 
+                  local name = ui.getDungeonName(term)
+                  table.insert(activeMap.data.dungeonList, {x = cX, y = cY, path = name})
+               end 
+               activeMap.map[cY][cX] = value 
+            end
+         end  
       else 
          local value = activeMap.map[cY][cX] 
          if value == "P" then 
             activeMap.data.playerCount = activeMap.data.playerCount - 1 
             activeMap.data.playerSpawn = nil
          end 
-         if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount - 1 end 
+         if value == "B" then activeMap.data.bossCount = activeMap.data.bossCount - 1 end
+         if value == "!" then 
+            for k, v in ipairs(activeMap.data.dungeonList) do 
+               if v.x == cX and v.y == cY then
+                  table.remove(activeMap.data.dungeonList, k)
+               end 
+            end 
+         end 
          activeMap.map[cY][cX] = '' 
       end 
    end 
@@ -165,7 +179,7 @@ function handleInput(key)
       save(activePath) 
       gameVar.state = 0
       ui.loadMapFiles()
-   elseif key >= 2 and key <= 7 then -- number keys (1-6) 
+   elseif key >= 2 and key <= 8 then -- number keys (1-6) 
       placeSelect = key - 1
    elseif key == 45 then -- x
       setTile('', true) 

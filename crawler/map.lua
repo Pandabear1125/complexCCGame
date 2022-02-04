@@ -1,27 +1,15 @@
 local activeMap = nil
 local activePath = nil
 
-local dungeonList = {}
 local monW, monH = term.getSize() 
 
-local oldPlayerData = {0, 0}
+local oldPlayerData = nil
 
 local LX, LY, HX, HY = 1, 1, monW, monH
 
 local function setTile(value, x, y)
    if x > 1 and x < activeMap.data.width and y > 1 and y < activeMap.data.height then
       activeMap.map[y][x] = value
-   end 
-end 
-
-local function populateActiveMap(holdingTable)
-   for i = 1, math.random(2, 5) do 
-      local x = math.random(7, activeMap.data.width-6)
-      local y = math.random(7, activeMap.data.height-6)
-      local mapPath = math.random(1, 9)
-      setTile('!', x, y)
-      setTile(mapPath, x+2, y)
-      table.insert(holdingTable, {x, y, mapPath})
    end 
 end 
 
@@ -46,8 +34,6 @@ function loadMapFile(path)
    else 
       activeMap.data.offY = 0
    end 
-   dungeonList = {}
-   populateActiveMap(dungeonList)
 end 
 
 function getActiveMap() 
@@ -55,10 +41,12 @@ function getActiveMap()
    return activeMap
 end 
 
-function changeMap(newMapPath) 
+function getActivePath()
+   return activePath
+end 
+
+function changeMap(newMapPath, fromPath) 
    save(activePath)
-   local px, py = player.getPosition()
-   oldPlayerData = {px, py}
    assert(fs.exists("mapEditor/maps/"..newMapPath), "map file at path: \'"..newMapPath.."\' not found")
    file.setDirectory("mapEditor/maps/")
    activeMap = {map = file.read(newMapPath, 1), data = file.read(newMapPath, 2)}
@@ -73,7 +61,13 @@ function changeMap(newMapPath)
    else 
       activeMap.data.offY = 0
    end 
-   player.initialize(activeMap, monW, monH)
+   local data = {}
+   for k, v in ipairs(activeMap.data.dungeonList) do 
+      if v.path == fromPath then 
+         data = {x = v.x, y = v.y}
+      end 
+   end 
+   player.initialize(activeMap, monW, monH, data)
 end 
    
 function draw(mon, ox, oy)
@@ -90,7 +84,9 @@ function draw(mon, ox, oy)
    for i = LX, HX do 
       for j = LY, HY do 
          mon.setCursorPos(i+activeMap.data.offX, j+activeMap.data.offY) 
-         mon.write(activeMap.map[j+oy][i+ox])
+         if activeMap.map[j+oy][i+ox] ~= "P" then 
+            mon.write(activeMap.map[j+oy][i+ox])
+         end 
       end 
    end 
 end 

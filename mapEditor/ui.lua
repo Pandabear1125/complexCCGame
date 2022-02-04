@@ -66,3 +66,18 @@ function drawMapCreate(mon)
    mon.setCursorBlink(true) 
    return mapName, width, height 
 end 
+
+function getDungeonName(mon)
+   mon.clear()
+   os.sleep(0.1)
+   mon.setCursorPos(1, 7)
+   mon.write("What is the path to this dungeon?")
+   mon.setCursorPos(3, 8)
+   local name = read()
+   mon.setCursorPos(1, 9)
+   mon.write("If you need to rename this later, just delete")
+   mon.setCursorPos(1, 10)
+   mon.write("and replace the '!'")
+   os.sleep(2)
+   return name 
+end 
