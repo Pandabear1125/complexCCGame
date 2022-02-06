@@ -1,22 +1,39 @@
-List = {
-   {name = 'SPR', desc = '', atk = 0, blk = 0},
-   {name = 'SWRD', desc = '', atk = 0, blk = 0},
-   {name = 'AXE ', desc = '', atk = 0, blk = 0},
-   {name = 'SHLD', desc = '', atk = 0, blk = 0},
-   {name = 'HP', desc = '', atk = 0, blk = 0},
-   {name = 'MANA', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
-   {name = '', desc = '', atk = 0, blk = 0},
+-- item values indexed by items.All[rarity][id].>>>
+-- item desc indexed by items.All.list[id].>>>
+All = { 
+   list = { -- desc/name
+      {name = '', desc = ''},
+      {name = '', desc = ''},
+      {name = '', desc = ''},
+      {name = '', desc = ''},
+      {name = '', desc = ''},
+      {name = '', desc = ''}
+   },
+
+   { -- common
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0}
+   },
+
+   { -- rare
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0}
+   },
+
+   { -- boss
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0},
+      {atk = 0, def = 0, bkl = 0}
+   }
 }
