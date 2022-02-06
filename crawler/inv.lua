@@ -21,7 +21,7 @@ function Inven:new(t)
       t.hash[i] = {}
       for j = 1, t.width do 
          t.hash[i][j] = {
-            value = ''
+            id = ''
          }
       end 
    end 
@@ -83,23 +83,25 @@ function Inven:draw(mon, ox, oy)
    for i = 1, self.height do 
       for j = 1, self.width do 
          mon.setCursorPos((i+ox) + (self.buffer+self.slotWidth)*(i-1)+1, (j+oy) + (self.buffer+self.slotHeight)*(j-1)+1)
-         if self.hash[j][i].value ~= '' then 
-            mon.write(items.List[self.hash[i][j].value].name)
+         if self.hash[i][j].id ~= '' then 
+            mon.write(items.equip.list[self.hash[i][j].id].name)
          end             
       end 
    end 
    self:highlightSlot(mon, selectX, selectY, ox, oy)
-   local value = self.hash[selectY][selectX].value
+   local id = self.hash[selectY][selectX].id
+   local level = self.hash[selectY][selectX].level
    mon.setCursorPos(1, 1)
    mon.write(selectX..' '..selectY)
-   if value ~= '' then
+
+   if id ~= '' then
       mon.setCursorPos(40, 1)
-      mon.write(items.List[value].name)
+      mon.write(items.equip.list[id].name)
       mon.setCursorPos(40, 2)
-      mon.write(items.List[value].desc)
+      mon.write(items.equip.list[id].desc)
       mon.setCursorPos(40, 4)
-      mon.write("ATK: "..items.List[value].atk)
+      mon.write("ATK: "..items.equip[level][id].atk)
       mon.setCursorPos(40, 5)
-      mon.write("BLK: "..items.List[value].blk)
+      mon.write("BLK: "..items.equip[level][id].blk)
    end 
 end 
