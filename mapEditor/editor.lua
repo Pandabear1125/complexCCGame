@@ -21,7 +21,8 @@ function createMap(path, width, height, emptyVal)
          playerCount = 0, 
          bossCount = 0, 
          playerSpawn = nil,
-         dungeonList = {}
+         dungeonList = {},
+         lootList = {}
       },
       map = {} 
    }
@@ -77,6 +78,10 @@ function setTile(value, erase)
                   local name = ui.getDungeonName(term)
                   table.insert(activeMap.data.dungeonList, {x = cX, y = cY, path = name})
                end 
+               if value == "$" then 
+                  local rarity = ui.getLootData(term)
+                  table.insert(activeMap.data.lootList, {x = cX, y = xY, rarity = rarity})
+               end 
                activeMap.map[cY][cX] = value 
             end
          end  
@@ -94,6 +99,13 @@ function setTile(value, erase)
                end 
             end 
          end 
+         if value == "$" then 
+            for k, v in ipairs(activeMap.data.lootList) do 
+               if v.x == cX and v.y == cY then
+                  table.remove(activeMap.data.lootList, k)
+               end 
+            end 
+         end
          activeMap.map[cY][cX] = '' 
       end 
    end 

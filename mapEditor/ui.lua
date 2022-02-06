@@ -81,3 +81,23 @@ function getDungeonName(mon)
    os.sleep(2)
    return name 
 end 
+
+function getLootData(mon)
+   mon.clear()
+   os.sleep(0.1)
+   mon.setCursorPos(1, 7)
+   mon.write("What is the rarity of this loot box?")
+   mon.setCursorPos(1, 8)
+   mon.write("Common/Rare/Boss")
+   mon.setCursorPos(3, 9)
+   local rarity = read()
+   mon.setCursorPos(1, 10)
+   if string.lower(rarity) ~= "common" and string.lower(rarity) ~= "rare" and string.lower(rarity) ~= "boss" then 
+      mon.write("Invalid Option")
+      os.sleep(0.25)
+      getLootData(mon)
+   end 
+
+   os.sleep(1)
+   return rarity
+end 
