@@ -1,14 +1,16 @@
 local selectX, selectY = 1, 1
 local selectedInv = nil
 local selectedSlot = nil
+local primary = {}
+local secondary = {}
 
 Inven = {
    x = 0, 
    y = 0, 
    width = 1,
    height = 1, 
-   buffer = 1,
-   slotWidth = 3, 
+   buffer = -1,
+   slotWidth = 4, 
    slotHeight = 3
 }
 
@@ -51,13 +53,50 @@ local function pickUpSlot()
    end 
 end 
 
+local function getFreeSpace(inv)
+   local free = false
+   for i = 1, inv.height do 
+      for j = 1, inv.width do 
+         if inv.hash[i][j].id then 
+            return j, i
+         end 
+      end 
+   end 
+   return false, false 
+end 
+
+function Inven:quickLoot(toInv)
+   pickUpSlot()
+   local toX, toY = getFreeSpot(toInv)
+   if toX and toY then 
+      toInv.hash[toY][toX] = selectedSlot
+      selectedSlot = nil 
+   else 
+      pickUpSlot()
+   end 
+end 
+
 local function moveSelectSlot(dx, dy)
    selectX = selectX + dx
    selectY = selectY + dy
    if selectX < 1 then 
       selectX = 1
+      if selectedInv == primary then 
+         selectedInv = secondary
+         selectX = selectedInv.width
+      else 
+         selectedInv = primary
+         selectX = selectedInv.width
+      end 
    elseif selectX > selectedInv.width then 
       selectX = selectedInv.width 
+      if selectedInv == primary then 
+         selectedInv = secondary
+         selectX = 1
+      else 
+         selectedInv = primary
+         selectX = 1
+      end 
    end 
    
    if selectY < 1 then 
@@ -90,18 +129,26 @@ function Inven:select()
    selectedInv = self 
 end 
 
+function Inven:setPrimary()
+   primary = self 
+end 
+
+function Inven:setSecondary()
+   secondary = self 
+end 
+
 function Inven:setItem(x, y, itemTable)
    self.hash[y][x] = itemTable
 end 
 
-function Inven:highlightSlot(mon, x, y, ox, oy)
-   mon.setCursorPos((x+ox) + (self.buffer+self.slotWidth)*(x-1), (y+oy) + (self.buffer+self.slotHeight)*(y-1))
+local function highlightSlot(mon, ox, oy)
+   mon.setCursorPos((selectX+ox) + (selectedInv.buffer*(selectX-1)) + (selectedInv.slotWidth)*(selectX-1)+selectedInv.x, (selectY+oy) + (selectedInv.buffer*(selectY-1)) + (selectedInv.slotHeight)*(selectY-1)+selectedInv.y)
    mon.write("/")
-   mon.setCursorPos((x+ox) + (self.buffer+self.slotWidth)*(x), (y+oy) + (self.buffer+self.slotHeight)*(y-1))
+   mon.setCursorPos((selectX+ox) + (selectedInv.buffer*(selectX-1)) + (selectedInv.slotWidth)*(selectX)+selectedInv.x, (selectY+oy) + (selectedInv.buffer*(selectY-1)) + (selectedInv.slotHeight)*(selectY-1)+selectedInv.y)
    mon.write("\\")
-   mon.setCursorPos((x+ox) + (self.buffer+self.slotWidth)*(x-1), (y+oy) + (self.buffer+self.slotHeight)*(y))
+   mon.setCursorPos((selectX+ox) + (selectedInv.buffer*(selectX-1)) + (selectedInv.slotWidth)*(selectX-1)+selectedInv.x, (selectY+oy) + (selectedInv.buffer*(selectY-1)) + (selectedInv.slotHeight)*(selectY)+selectedInv.y)
    mon.write("\\")
-   mon.setCursorPos((x+ox) + (self.buffer+self.slotWidth)*(x), (y+oy) + (self.buffer+self.slotHeight)*(y))
+   mon.setCursorPos((selectX+ox) + (selectedInv.buffer*(selectX-1)) + (selectedInv.slotWidth)*(selectX)+selectedInv.x, (selectY+oy) + (selectedInv.buffer*(selectY-1)) + (selectedInv.slotHeight)*(selectY)+selectedInv.y)
    mon.write("/")
 end 
 
@@ -109,15 +156,23 @@ function Inven:draw(mon, ox, oy)
    local ox, oy = ox or 0, oy or 0
    for i = 1, self.height do 
       for j = 1, self.width do 
-         mon.setCursorPos((j+ox) + (self.buffer+self.slotWidth)*(j-1)+1, (i+oy) + (self.buffer+self.slotHeight)*(i-1)+1)
+         mon.setCursorPos((j+ox) + (self.buffer+self.slotWidth)*(j-1)+1+self.x, (i+oy) + (self.buffer+self.slotHeight)*(i-1)+1+self.y)
          if self.hash[i][j].id then 
             mon.write(items.equip.list[self.hash[i][j].id].name)
-         end             
+         end    
+         mon.setCursorPos((j+ox) + (self.buffer*(j-1)) + (self.slotWidth)*(j-1)+self.x, (i+oy) + (self.buffer*(i-1)) + (self.slotHeight)*(i-1)+self.y)
+         mon.write('+')
+         mon.setCursorPos((j+ox) + (self.buffer*(j-1)) + (self.slotWidth)*(j)+self.x, (i+oy) + (self.buffer*(i-1)) + (self.slotHeight)*(i-1)+self.y)
+         mon.write('+')
+         mon.setCursorPos((j+ox) + (self.buffer*(j-1)) + (self.slotWidth)*(j-1)+self.x, (i+oy) + (self.buffer*(i-1)) + (self.slotHeight)*(i)+self.y)
+         mon.write('+')
+         mon.setCursorPos((j+ox) + (self.buffer*(j-1)) + (self.slotWidth)*(j)+self.x, (i+oy) + (self.buffer*(i-1)) + (self.slotHeight)*(i)+self.y)
+         mon.write('+')      
       end 
    end 
-   self:highlightSlot(mon, selectX, selectY, ox, oy)
-   local id = self.hash[selectY][selectX].id
-   local level = self.hash[selectY][selectX].level
+   highlightSlot(mon, ox, oy)
+   local id = selectedInv.hash[selectY][selectX].id
+   local level = selectedInv.hash[selectY][selectX].level
    mon.setCursorPos(1, 1)
    mon.write(selectX..' '..selectY..' '..tostring(selectedSlot))
 
