@@ -1,9 +1,9 @@
-os.loadAPI("mapEditor/editor")
-os.loadAPI("mapEditor/gameVar")
-os.loadAPI("mapEditor/button")
-os.loadAPI("mapEditor/file")
-os.loadAPI("mapEditor/input")
-os.loadAPI("mapEditor/ui")
+os.loadAPI("mapEditor/editor.lua")
+os.loadAPI("mapEditor/gameVar.lua")
+os.loadAPI("mapEditor/button.lua")
+os.loadAPI("mapEditor/file.lua")
+os.loadAPI("mapEditor/input.lua")
+os.loadAPI("mapEditor/ui.lua")
 
 --gameVar.state 
 --0 for main menu 

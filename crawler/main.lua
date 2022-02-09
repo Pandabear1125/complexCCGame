@@ -1,7 +1,7 @@
-os.loadAPI("file.lua")
-os.loadAPI("gameVar.lua")
-os.loadAPI("map.lua")
-os.loadAPI("player.lua")
+os.loadAPI("crawler/file.lua")
+os.loadAPI("crawler/gameVar.lua")
+os.loadAPI("crawler/map.lua")
+os.loadAPI("crawler/player.lua")
 
 map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
