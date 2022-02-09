@@ -97,7 +97,7 @@ function getLootData(mon)
       os.sleep(0.25)
       getLootData(mon)
    end 
-
-   os.sleep(1)
-   return rarity
+   if string.lower(rarity) == 'common' then return 1 end 
+   if string.lower(rarity) == 'rare' then return 2 end 
+   if string.lower(rarity) == 'boss' then return 3 end 
 end 

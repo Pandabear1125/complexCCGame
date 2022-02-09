@@ -80,7 +80,7 @@ function setTile(value, erase)
                end 
                if value == "$" then 
                   local rarity = ui.getLootData(term)
-                  table.insert(activeMap.data.lootList, {x = cX, y = xY, rarity = rarity})
+                  table.insert(activeMap.data.lootList, {x = cX, y = cY, rarity = rarity})
                end 
                activeMap.map[cY][cX] = value 
             end

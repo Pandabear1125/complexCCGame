@@ -67,6 +67,10 @@ function changeMap(newMapPath, fromPath)
          data = {x = v.x, y = v.y}
       end 
    end 
+   if data.x and data.y then 
+   else 
+      data = nil 
+   end 
    player.initialize(activeMap, monW, monH, data)
 end 
    
