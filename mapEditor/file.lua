@@ -39,14 +39,14 @@ function write(simplePath, text, isMultiLine) -- text can be a table, with each 
             elseif type(text[i]) == 'number' then 
                h.writeLine(tostring(text[i])) 
             elseif type(text[i]) == 'table' then 
-               local serText = textutils.serialize(text[i]) 
+               local serText = textutils.serialize(text[i], {compact = true}) 
                h.writeLine(serText) 
             else 
                error("text of type \'"..type(text[i]).."\' is not supported") 
             end 
          end 
       else 
-         local serText = textutils.serialize(text) 
+         local serText = textutils.serialize(text, {compact = true}) 
          h.writeLine(serText) 
       end 
    else 
