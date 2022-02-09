@@ -65,9 +65,15 @@ local function getFreeSpace(inv)
    return false, false 
 end 
 
-function Inven:quickLoot(toInv)
+function Inven:quickLoot()
    pickUpSlot()
-   local toX, toY = getFreeSpot(toInv)
+   local toInv = nil
+   if primary == self then 
+      toInv = secondary 
+   else 
+      toInv = primary
+   end 
+   local toX, toY = getFreeSpace(toInv)
    if toX and toY then 
       toInv.hash[toY][toX] = selectedSlot
       selectedSlot = nil 
@@ -118,6 +124,8 @@ function getInput()
       moveSelectSlot(1, 0)
    elseif key == 57 then -- space 
       pickUpSlot()
+   elseif key == 28 then 
+      selectedInv:quickLoot()
    end 
 end 
 
