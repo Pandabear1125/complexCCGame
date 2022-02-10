@@ -57,7 +57,7 @@ local function getFreeSpace(inv)
    local free = false
    for i = 1, inv.height do 
       for j = 1, inv.width do 
-         if inv.hash[i][j].id then 
+         if not inv.hash[i][j].id then 
             return j, i
          end 
       end 
@@ -66,19 +66,21 @@ local function getFreeSpace(inv)
 end 
 
 function Inven:quickLoot()
-   pickUpSlot()
-   local toInv = nil
-   if primary == self then 
-      toInv = secondary 
-   else 
-      toInv = primary
-   end 
-   local toX, toY = getFreeSpace(toInv)
-   if toX and toY then 
-      toInv.hash[toY][toX] = selectedSlot
-      selectedSlot = nil 
-   else 
+   if self.hash[selectY][selectX].id then 
       pickUpSlot()
+      local toInv = nil
+      if primary == self then 
+         toInv = secondary 
+      else 
+         toInv = primary
+      end 
+      local toX, toY = getFreeSpace(toInv)
+      if toX and toY then 
+         toInv.hash[toY][toX] = selectedSlot
+         selectedSlot = nil 
+      else 
+         pickUpSlot()
+      end 
    end 
 end 
 
