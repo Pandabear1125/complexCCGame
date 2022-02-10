@@ -7,6 +7,15 @@ local Player = {
    mapW = 0
 }
 
+Player.inventory = inv.Inven:new{
+   x = 1,
+   y = 1, 
+   width = 4, 
+   height = 5
+}
+Player.inventory:setPrimary()
+Player.inventory:select()
+
 function initialize(Map, monW, monH, data)
    Player.mapW, Player.mapH = Map.data.width, Map.data.height
    Player.widthRadius = math.floor(monW/2)

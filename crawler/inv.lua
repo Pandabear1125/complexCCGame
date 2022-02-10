@@ -1,8 +1,8 @@
 local selectX, selectY = 1, 1
 local selectedInv = nil
 local selectedSlot = nil
-local primary = {}
-local secondary = {}
+local primary = nil
+local secondary = nil
 
 Inven = {
    x = 0, 
@@ -88,22 +88,28 @@ local function moveSelectSlot(dx, dy)
    selectX = selectX + dx
    selectY = selectY + dy
    if selectX < 1 then 
-      selectX = 1
-      if selectedInv == primary then 
-         selectedInv = secondary
-         selectX = selectedInv.width
+      if primary and secondary then 
+         if selectedInv == primary then 
+            selectedInv = secondary
+            selectX = selectedInv.width
+         else 
+            selectedInv = primary
+            selectX = selectedInv.width
+         end 
       else 
-         selectedInv = primary
-         selectX = selectedInv.width
+         selectX = 1
       end 
-   elseif selectX > selectedInv.width then 
-      selectX = selectedInv.width 
-      if selectedInv == primary then 
-         selectedInv = secondary
-         selectX = 1
+   elseif selectX > selectedInv.width then
+      if primary and secondary then  
+         if selectedInv == primary then 
+            selectedInv = secondary
+            selectX = 1
+         else 
+            selectedInv = primary
+            selectX = 1
+         end 
       else 
-         selectedInv = primary
-         selectX = 1
+         selectX = selectedInv.width 
       end 
    end 
    
@@ -114,8 +120,7 @@ local function moveSelectSlot(dx, dy)
    end
 end 
 
-function getInput()
-   local event, key = os.pullEvent('key')
+function getInput(key)
    if key == 208 then -- down arrow
       moveSelectSlot(0, 1)
    elseif key == 200 then -- up arrow 
@@ -195,5 +200,15 @@ function Inven:draw(mon, ox, oy)
       mon.write("ATK: "..items.equip[level][id].atk)
       mon.setCursorPos(40, 5)
       mon.write("BLK: "..items.equip[level][id].blk)
+   end 
+end 
+
+function drawAll(mon)
+   mon.clear()
+   if primary then 
+      primary:draw(mon)
+   end 
+   if secondary then 
+      secondary:draw(mon)
    end 
 end 

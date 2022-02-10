@@ -1,6 +1,8 @@
 os.loadAPI("crawler/file.lua")
 os.loadAPI("crawler/gameVar.lua")
 os.loadAPI("crawler/map.lua")
+os.loadAPI("crawler/inv.lua")
+os.loadAPI("crawler/items.lua")
 os.loadAPI("crawler/player.lua")
 
 map.loadMapFile("mainWorld")
@@ -11,14 +13,23 @@ player.initialize(map.getActiveMap(), monW, monH)
 
 function getInput() 
    local event, key = os.pullEvent('key') 
-   if key == 208 then -- down arrow
-      player.move(map.getActiveMap(), 0, 1)
-   elseif key == 200 then -- up arrow 
-      player.move(map.getActiveMap(), 0, -1)
-   elseif key == 203 then -- left arrow 
-      player.move(map.getActiveMap(), -1, 0)
-   elseif key == 205 then -- right arrow
-      player.move(map.getActiveMap(), 1, 0)
+   if key == 15 then -- tab
+      if gameVar.state == 1 then gameVar.state = 2 
+      elseif gameVar.state == 2 then gameVar.state = 1 
+      end 
+   end 
+   if gameVar.state == 1 then 
+      if key == 208 then -- down arrow
+         player.move(map.getActiveMap(), 0, 1)
+      elseif key == 200 then -- up arrow 
+         player.move(map.getActiveMap(), 0, -1)
+      elseif key == 203 then -- left arrow 
+         player.move(map.getActiveMap(), -1, 0)
+      elseif key == 205 then -- right arrow
+         player.move(map.getActiveMap(), 1, 0)
+      end 
+   elseif gameVar.state == 2 then 
+      inv.getInput(key)
    end 
 end 
 
@@ -28,11 +39,12 @@ local function mainLoop()
          local pX, pY = player.getPosition()
          map.draw(term, pX-centerX, pY-centerY)
          player.draw(term)
-         getInput()
-         --map.update()
+      elseif gameVar.state == 2 then 
+         inv.drawAll(term)
       else 
          return 1
       end 
+      getInput()
    end 
 end 
 
