@@ -34,6 +34,7 @@ function loadMapFile(path)
    else 
       activeMap.data.offY = 0
    end 
+   loot.populateLoot(activeMap.data.lootList)
 end 
 
 function getActiveMap() 
@@ -61,6 +62,9 @@ function changeMap(newMapPath, fromPath)
    else 
       activeMap.data.offY = 0
    end 
+
+   loot.populateLoot(activeMap.data.lootList)
+
    local data = {}
    for k, v in ipairs(activeMap.data.dungeonList) do 
       if v.path == fromPath then 

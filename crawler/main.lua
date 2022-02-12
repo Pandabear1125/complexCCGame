@@ -3,7 +3,10 @@ os.loadAPI("crawler/gameVar.lua")
 os.loadAPI("crawler/map.lua")
 os.loadAPI("crawler/inv.lua")
 os.loadAPI("crawler/items.lua")
+os.loadAPI("crawler/loot.lua")
 os.loadAPI("crawler/player.lua")
+
+math.randomseed(os.time())
 
 map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
@@ -27,6 +30,8 @@ function getInput()
          player.move(map.getActiveMap(), -1, 0)
       elseif key == 205 then -- right arrow
          player.move(map.getActiveMap(), 1, 0)
+      elseif key == 57 then 
+         loot.populateLootBox(nil, 2, 2)
       end 
    elseif gameVar.state == 2 then 
       inv.getInput(key)
