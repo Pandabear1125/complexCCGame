@@ -23,17 +23,10 @@ function populateLoot(list) -- from map data
       }
       
 
-      for i = 1, math.random(1, 3) do 
+      for i = 1, math.random(5) do 
          local item = {}
          item.id = math.random(1, 4) -- num of items in item.lua
-         local rarity = math.random(1, 100)
-         if rarity > 0 and rarity <= 10 then 
-            item.level = 3
-         elseif rarity > 10 and rarity <= 30 then 
-            item.level = 2
-         else 
-            item.level = 1
-         end 
+         item.level = math.random(3)
          table.insert(box.items, item)
       end 
       -- error(#box.items)
@@ -48,13 +41,12 @@ function populateLootBox(x, y)
          activeBox = v
       end 
    end 
-   local count = 0
    for k, v in ipairs(activeBox.items) do 
       local toX, toY = inv.getFreeSpace(secondaryLootBox)
-      secondaryLootBox:setItem(toX, toY, v)
-      count = k
+      if toX and toY then 
+         secondaryLootBox:setItem(toX, toY, v)
+      end 
    end 
-   error(count)
 end
 
 function Box:new(t)

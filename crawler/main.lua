@@ -38,7 +38,6 @@ function getInput()
 end 
 
 local function mainLoop() 
-   math.randomseed(os.time())
    while true do 
       if gameVar.state == 1 then 
          local pX, pY = player.getPosition()
