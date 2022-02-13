@@ -53,7 +53,7 @@ local function pickUpSlot()
    end 
 end 
 
-local function getFreeSpace(inv)
+function getFreeSpace(inv)
    local free = false
    for i = 1, inv.height do 
       for j = 1, inv.width do 
