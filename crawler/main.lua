@@ -9,7 +9,7 @@ os.loadAPI("crawler/player.lua")
 
 map.loadMapFile("mainWorld")
 local monW, monH = term.getSize()
-local centerX, centerY = math.floor(monW/2), math.floor(monH/2)
+local centerX, centerY = math.ceil(monW/2), math.ceil(monH/2)
 
 player.initialize(map.getActiveMap(), monW, monH)
 
