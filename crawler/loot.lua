@@ -4,13 +4,13 @@ local Box = {
    rarity = 0
 }
 
-secondaryLootBox = inv.Inven:new{
-   x = 25, 
-   y = 0, 
-   width = 2, 
-   height = 5
-}
-secondaryLootBox:setSecondary()
+-- secondaryLootBox = inv.Inven:new{
+--    x = 25, 
+--    y = 0, 
+--    width = 2, 
+--    height = 5
+-- }
+-- secondaryLootBox:setSecondary()
 
 boxes = {}
 
@@ -35,6 +35,15 @@ function populateLoot(list) -- from map data
 end 
 
 function loadLootBox(x, y)
+   secondaryLootBox = inv.Inven:new{
+      x = 25, 
+      y = 0, 
+      width = 2, 
+      height = 5
+   }
+   secondaryLootBox:setSecondary()
+   secondaryLootBox:select()
+
    local activeBox;
    for k, v in ipairs(boxes) do 
       if v.x == x and v.y == y then 
@@ -66,6 +75,10 @@ function unloadLootBox(x, y)
          end 
       end 
    end 
+
+   secondaryLootBox:setSecondary()
+   inv.selectPrimary()
+   secondaryLootBox = nil
 end 
 
 function Box:new(t)

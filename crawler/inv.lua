@@ -66,7 +66,7 @@ function getFreeSpace(inv)
 end 
 
 function Inven:quickLoot()
-   if self.hash[selectY][selectX].id then 
+   if self.hash[selectY][selectX].id and primary and secondary then 
       pickUpSlot()
       local toInv = nil
       if primary == self then 
@@ -145,11 +145,29 @@ function Inven:select()
 end 
 
 function Inven:setPrimary()
-   primary = self 
+   if primary == self then 
+      primary = nil 
+   else 
+      primary = self 
+   end 
 end 
 
 function Inven:setSecondary()
-   secondary = self 
+   if secondary == self then 
+      secondary = nil 
+   else 
+      secondary = self 
+   end  
+end 
+
+function selectPrimary()
+   assert(primary, "No primary inventory initialized")
+   selectedInv = primary
+end 
+
+function selectSecondary()
+   assert(secondary, "No primary inventory initialized")
+   selectedInv = secondary
 end 
 
 function Inven:setItem(x, y, itemTable)
