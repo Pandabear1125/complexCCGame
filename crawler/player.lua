@@ -51,9 +51,17 @@ local function checkCollision(Map, x, y)
          return false
       end 
    end 
+
    if tile == 'X' or tile == 'E' or tile == 'B' then 
       return false 
+   elseif tile == '$' then -- check if on loot box
+      loot.loadLootBox(x, y)
+      return true  
    else 
+      -- check if leaving lootbox
+      if Map.map[Player.y][Player.x] == '$' then 
+         loot.unloadLootBox(Player.x, Player.y)
+      end 
       return true 
    end 
 end 
@@ -110,4 +118,13 @@ function draw(mon)
 
    mon.setCursorPos(curX+Player.ox, curY+Player.oy)
    mon.write("P") 
+   mon.setCursorPos(1, 1)
+   mon.write(Player.x..' '..Player.y)
+   mon.setCursorPos(1, 2)
+   mon.write(Player.widthRadius..' '..Player.heightRadius)
+   mon.setCursorPos(1, 3)
+   mon.write(Player.mapW..' '..Player.mapH)
+   mon.setCursorPos(1, 4)
+   mon.write(curX..' '..curY)
+
 end 

@@ -34,7 +34,7 @@ function populateLoot(list) -- from map data
    end 
 end 
 
-function populateLootBox(x, y)
+function loadLootBox(x, y)
    local activeBox;
    for k, v in ipairs(boxes) do 
       if v.x == x and v.y == y then 
@@ -48,6 +48,25 @@ function populateLootBox(x, y)
       end 
    end 
 end
+
+function unloadLootBox(x, y)
+   local activeBox;
+   for k, v in ipairs(boxes) do 
+      if v.x == x and v.y == y then 
+         activeBox = v
+      end 
+   end
+
+   activeBox.items = {}
+   for j = 1, secondaryLootBox.height do
+      for i = 1, secondaryLootBox.width do 
+         if secondaryLootBox.hash[j][i].id then 
+            table.insert(activeBox.items, secondaryLootBox.hash[j][i])
+            secondaryLootBox:clearSlot(i, j)
+         end 
+      end 
+   end 
+end 
 
 function Box:new(t)
    local t = t or {}

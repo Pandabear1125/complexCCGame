@@ -30,7 +30,7 @@ function getInput()
       elseif key == 205 then -- right arrow
          player.move(map.getActiveMap(), 1, 0)
       elseif key == 57 then 
-         loot.populateLootBox(2, 2)
+         -- loot.loadLootBox(2, 2)
       end 
    elseif gameVar.state == 2 then 
       inv.getInput(key)
