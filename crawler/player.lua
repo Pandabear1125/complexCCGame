@@ -18,8 +18,8 @@ Player.inventory:select()
 
 function initialize(Map, monW, monH, data)
    Player.mapW, Player.mapH = Map.data.width, Map.data.height
-   Player.widthRadius = math.floor(monW/2)
-   Player.heightRadius = math.floor(monH/2)
+   Player.widthRadius = math.ceil(monW/2)
+   Player.heightRadius = math.ceil(monH/2)
    if data then 
       moveTo(data.x, data.y)
    else 
