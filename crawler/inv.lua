@@ -150,6 +150,8 @@ function Inven:setPrimary()
    else 
       primary = self 
    end 
+   selectX = 1
+   selectY = 1
 end 
 
 function Inven:setSecondary()
@@ -158,6 +160,8 @@ function Inven:setSecondary()
    else 
       secondary = self 
    end  
+   selectX = 1
+   selectY = 1
 end 
 
 function selectPrimary()
