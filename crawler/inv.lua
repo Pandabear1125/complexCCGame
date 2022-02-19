@@ -131,8 +131,14 @@ function getInput(key)
       moveSelectSlot(1, 0)
    elseif key == 57 then -- space 
       pickUpSlot()
-   elseif key == 28 then 
+   elseif key == 28 then -- tab
       selectedInv:quickLoot()
+   elseif key == 14 then -- backspace
+      if selectedSlot then 
+         selectedSlot = nil
+      else 
+         selectedInv.hash[selectY][selectX] = {}
+      end 
    end 
 end 
 
